@@ -1,0 +1,47 @@
+import tkinter as tk
+from tkinter import messagebox
+from datetime import datetime
+import os
+
+class DailyNotesApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Daily Notes App")
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Text widget for entering notes
+        self.notes_text = tk.Text(self.master, height=10, width=50)
+        self.notes_text.pack(pady=10)
+
+        # Save button
+        save_button = tk.Button(self.master, text="Save", command=self.save_notes)
+        save_button.pack()
+
+    def save_notes(self):
+        notes = self.notes_text.get("1.0", tk.END).strip()
+        if notes:
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            time_str = datetime.now().strftime("%H-%M-%S")  # Format for hours, minutes, seconds
+
+            # Specify the folder path where you want to save the notes
+            folder_path = "D:/SID/3. IIT Delhi(2023)/Daily Notes"
+
+            # Create the file path with the specified folder directory
+            file_name = os.path.join(folder_path, f"notes_{date_str}_{time_str}.txt")
+
+            with open(file_name, "w") as file:
+                file.write(notes)
+
+            messagebox.showinfo("Success", f"Notes saved successfully in {file_name}")
+        else:
+            messagebox.showwarning("Warning", "Please enter some notes before saving.")
+
+def main():
+    root = tk.Tk()
+    app = DailyNotesApp(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
